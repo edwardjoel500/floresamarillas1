@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flores Amarillas Animadas</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #1a6fc4, #87ceeb);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            overflow: hidden;
+        }
+        
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to top, #6b4226, #8b5a2b);
+            border-top-left-radius: 50% 20px;
+            border-top-right-radius: 50% 20px;
+        }
+        
+        .flower {
+            position: absolute;
+            bottom: 50px;
+            animation: growFlower 5s ease-out forwards;
+            opacity: 0;
+            transform-origin: bottom center;
+        }
+        
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            background: linear-gradient(to top, #388e3c, #4caf50);
+            border-radius: 2px;
+        }
+        
+        .petals {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: linear-gradient(to bottom, #fff800, #ffff00);
+            border-radius: 50% 50% 50% 50%;
+            transform-origin: bottom center;
+        }
+        
+        .center {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(#ffd700, #ffa000);
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Dancing Script', cursive;
+            color: #ffeb3b;
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: fadeIn 2s 5s forwards;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 0 5px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #388e3c;
+        }
+        
+        @keyframes growFlower {
+            0% {
+                height: 0;
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                height: var(--flower-height);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Para Ti - Te Amo</h1>
+        <p class="subtitle">Flores amarillas para dedicar a esa persona especial</p>
+    </div>
+    
+    <div class="container">
+        <div class="ground"></div>
+        <div class="message">Cada flor representa un motivo por el que te amo</div>
+        <!-- Las flores se generarán con JavaScript -->
+    </div>
+    
+    <div class="controls">
+        <button id="addFlower">Añadir Flor</button>
+        <button id="reset">Reiniciar</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            const addFlowerBtn = document.getElementById('addFlower');
+            const resetBtn = document.getElementById('reset');
+            
+            // Crear flores iniciales
+            createFlowers(5);
+            
+            // Evento para añadir una flor
+            addFlowerBtn.addEventListener('click', function() {
+                createFlowers(1);
+            });
+            
+            // Evento para reiniciar la animación
+            resetBtn.addEventListener('click', function() {
+                // Eliminar todas las flores
+                const flowers = document.querySelectorAll('.flower');
+                flowers.forEach(flower => flower.remove());
+                
+                // Crear nuevas flores
+                createFlowers(5);
+            });
+            
+            function createFlowers(count) {
+                for (let i = 0; i < count; i++) {
+                    setTimeout(() => {
+                        createFlower();
+                    }, i * 300);
+                }
+            }
+            
+            function createFlower() {
+                // Crear elemento flor
+                const flower = document.createElement('div');
+                flower.classList.add('flower');
+                
+                // Altura aleatoria entre 100 y 200px
+                const height = Math.floor(Math.random() * 100) + 100;
+                flower.style.setProperty('--flower-height', `${height}px`);
+                
+                // Posición horizontal aleatoria
+                const left = Math.random() * 100;
+                flower.style.left = `${left}%`;
+                
+                // Crear tallo
+                const stem = document.createElement('div');
+                stem.classList.add('stem');
+                stem.style.height = `${height}px`;
+                
+                // Crear pétalos
+                const petals = document.createElement('div');
+                petals.classList.add('petals');
+                petals.style.height = `${height}px`;
+                
+                // Crear centro de la flor
+                const center = document.createElement('div');
+                center.classList.add('center');
+                
+                // Añadir pétalos (6 pétalos)
+                for (let i = 0; i < 6; i++) {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    petal.style.transform = `rotate(${i * 60}deg) translateY(-15px)`;
+                    petals.appendChild(petal);
+                }
+                
+                // Añadir elementos a la flor
+                petals.appendChild(center);
+                flower.appendChild(stem);
+                flower.appendChild(petals);
+                
+                // Añadir flor al contenedor
+                container.appendChild(flower);
+                
+                // Eliminar la flor después de un tiempo para optimizar
+                setTimeout(() => {
+                    if (flower.parentNode) {
+                        flower.remove();
+                    }
+                }, 20000);
+            }
+        });
+    </script>
+</body>
+</html>
